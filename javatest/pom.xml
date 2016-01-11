@@ -1,0 +1,359 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.aug3.test</groupId>
+	<artifactId>javatest</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+
+	<properties>
+		<curator.version>2.9.1</curator.version>
+	</properties>
+
+	<dependencies>
+
+		<dependency>
+			<groupId>org.mongodb</groupId>
+			<artifactId>mongo-java-driver</artifactId>
+			<version>2.12.4</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
+			<version>2.2.4</version>
+		</dependency>
+
+
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>2.4</version>
+		</dependency>
+
+		<dependency>
+			<groupId>commons-lang</groupId>
+			<artifactId>commons-lang</artifactId>
+			<version>2.6</version>
+		</dependency>
+
+		<dependency>
+			<groupId>commons-logging</groupId>
+			<artifactId>commons-logging</artifactId>
+			<version>1.1.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>1.2.16</version>
+		</dependency>
+
+		<dependency>
+			<groupId>dom4j</groupId>
+			<artifactId>dom4j</artifactId>
+			<version>1.6.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>xerces</groupId>
+			<artifactId>xercesImpl</artifactId>
+			<version>2.6.2</version>
+		</dependency>
+
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.8.2</version>
+		</dependency>
+
+		<dependency>
+			<groupId>commons-codec</groupId>
+			<artifactId>commons-codec</artifactId>
+			<version>1.6</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+			<version>4.3</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpcore</artifactId>
+			<version>4.3</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpasyncclient</artifactId>
+			<version>4.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>net.jpountz.lz4</groupId>
+			<artifactId>lz4</artifactId>
+			<version>1.1.2</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.google.inject</groupId>
+			<artifactId>guice</artifactId>
+			<version>3.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>aopalliance</groupId>
+			<artifactId>aopalliance</artifactId>
+			<version>1.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>cglib</groupId>
+			<artifactId>cglib</artifactId>
+			<version>2.2</version>
+		</dependency>
+		<dependency>
+			<groupId>asm</groupId>
+			<artifactId>asm</artifactId>
+			<version>3.2</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
+			<version>2.2.4</version>
+		</dependency>
+
+		<dependency>
+			<groupId>redis.clients</groupId>
+			<artifactId>jedis</artifactId>
+			<version>2.7.2</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.esotericsoftware.kryo</groupId>
+			<artifactId>kryo</artifactId>
+			<version>2.17</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjrt</artifactId>
+			<version>1.6.9</version>
+		</dependency>
+
+		<dependency>
+			<groupId>io.netty</groupId>
+			<artifactId>netty</artifactId>
+			<version>3.10.4.Final</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.avro</groupId>
+			<artifactId>avro</artifactId>
+			<version>1.7.7</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.thrift</groupId>
+			<artifactId>libthrift</artifactId>
+			<version>0.9.3</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.kafka</groupId>
+			<artifactId>kafka_2.10</artifactId>
+			<version>0.8.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>de.undercouch</groupId>
+			<artifactId>bson4jackson</artifactId>
+			<version>2.2.3</version>
+		</dependency>
+
+		<dependency>
+			<groupId>javax.mail</groupId>
+			<artifactId>mail</artifactId>
+			<version>1.4.7</version>
+		</dependency>
+
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>5.1.20</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.hbase</groupId>
+			<artifactId>hbase-client</artifactId>
+			<version>0.98.9-hadoop2</version>
+		</dependency>
+
+		<!-- 由于hbase-client依赖的版本过低，导致mvn无法同步，下面手工引入新版本 start -->
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+			<version>18.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.protobuf</groupId>
+			<artifactId>protobuf-java</artifactId>
+			<version>2.6.1</version>
+		</dependency>
+		<dependency>
+			<groupId>com.sun.jersey</groupId>
+			<artifactId>jersey-core</artifactId>
+			<version>1.18.3</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.hadoop</groupId>
+			<artifactId>hadoop-common</artifactId>
+			<version>2.6.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.hadoop</groupId>
+			<artifactId>hadoop-yarn-api</artifactId>
+			<version>2.6.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.hadoop</groupId>
+			<artifactId>hadoop-mapreduce-client-core</artifactId>
+			<version>2.6.0</version>
+		</dependency>
+		<!-- end -->
+		<!-- only leave hadoop-hdfs <dependency> <groupId>org.apache.hadoop</groupId> 
+			<artifactId>hadoop-core</artifactId> <version>1.2.1</version> </dependency> -->
+		<dependency>
+			<groupId>org.apache.hadoop</groupId>
+			<artifactId>hadoop-common</artifactId>
+			<version>2.6.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.hadoop</groupId>
+			<artifactId>hadoop-hdfs</artifactId>
+			<version>2.6.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.antlr</groupId>
+			<artifactId>antlr4</artifactId>
+			<version>4.5</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.typesafe.akka</groupId>
+			<artifactId>akka-actor_2.10</artifactId>
+			<version>2.3.8</version>
+		</dependency>
+
+		<!-- openoffice -->
+		<dependency>
+			<groupId>com.artofsolving</groupId>
+			<artifactId>jodconverter</artifactId>
+			<version>2.2.1</version>
+		</dependency>
+
+		<!-- zookeeper -->
+		<dependency>
+			<groupId>org.apache.curator</groupId>
+			<artifactId>curator-framework</artifactId>
+			<version>${curator.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.curator</groupId>
+			<artifactId>curator-client</artifactId>
+			<version>${curator.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.curator</groupId>
+			<artifactId>curator-x-discovery</artifactId>
+			<version>${curator.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.curator</groupId>
+			<artifactId>curator-test</artifactId>
+			<version>${curator.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.zookeeper</groupId>
+			<artifactId>zookeeper</artifactId>
+			<version>3.4.7</version>
+		</dependency>
+
+	</dependencies>
+
+	<build>
+		<plugins>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.3</version>
+				<configuration>
+					<source>1.8</source>
+					<target>1.8</target>
+					<encoding>UTF-8</encoding>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<configuration>
+					<encoding>UTF-8</encoding>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>2.6</version>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.antlr</groupId>
+				<artifactId>antlr4-maven-plugin</artifactId>
+				<version>4.5</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>antlr4</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<!-- avro maven plugin for performing code generation -->
+			<plugin>
+				<groupId>org.apache.avro</groupId>
+				<artifactId>avro-maven-plugin</artifactId>
+				<version>1.7.7</version>
+				<executions>
+					<execution>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>schema</goal>
+						</goals>
+						<configuration>
+							<sourceDirectory>${project.basedir}/src/main/avro/</sourceDirectory>
+							<outputDirectory>${project.basedir}/src/main/java/</outputDirectory>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+
+		</plugins>
+	</build>
+</project>

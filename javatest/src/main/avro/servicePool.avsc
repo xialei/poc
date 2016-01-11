@@ -1,0 +1,43 @@
+{"namespace": "com.aug3.test.io.avro",
+ "type": "record",
+ "name": "ServicePool",
+ "fields": [
+     {
+     	"name": "si",
+     	"type":{
+        	"type": "array", 
+	        "items":{
+	                "name":"ServiceInstance",
+	                "type":"record",
+	                "fields":[
+	                      {"name":"name", "type":"string"},
+	                      {"name":"id", "type":"int"},
+	                      {
+	                      	"name":"uri",
+	                      	"type":{
+	                      		"type": "array",
+	                      		"items":{
+	                      			"name":"UriSpec",
+	                      			"type":"record",
+					                "fields":[
+					                      {"name":"host", "type":"string"},
+					                      {"name":"port", "type":"int"},
+					                      {
+					                      	"name":"scheme",
+					                      	"type":{
+					                      		"type": "enum",
+					                      		"name": "ProtocolType",
+					                      		"symbols": ["HTTP", "RPC", "AMQP"]
+					                      	}
+					                      }
+					                ]
+	                      		}
+	                      	}
+	                      },
+	                      {"name":"ts", "type":"long"}
+	                ]
+	        }
+        }
+     }
+ ]
+}

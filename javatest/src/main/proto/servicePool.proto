@@ -1,0 +1,28 @@
+package pb;
+
+option java_package = "com.aug3.test.io.pb";
+option java_outer_classname = "ServicePoolProtos";
+
+message ServiceInstance {
+  required string name = 1;
+  required int32 id = 2;
+
+  enum ProtocolType {
+    HTTP = 0;
+    RPC = 1;
+    AMQP = 2;
+  }
+
+  message UriSpec {
+    required string host = 1;
+    required int32 port = 2;
+    optional ProtocolType type = 3 [default = HTTP];
+  }
+
+  repeated UriSpec uri = 3;
+  optional int64 ts = 4;
+}
+
+message ServicePool {
+  repeated ServiceInstance si = 1;
+}
