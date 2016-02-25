@@ -1,0 +1,6 @@
+eclipse.preferences.version=1
+encoding//dataops/ced.py=utf-8
+encoding//dataops/downloadstats.py=utf-8
+encoding//dataops/yhyc.py=utf-8
+encoding//memsql/dataimport.py=utf-8
+encoding//tools/LRUCache.py=utf-8
