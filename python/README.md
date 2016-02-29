@@ -16,3 +16,14 @@ python
 > 2. crawler
 
 > 3. algorithm
+
+> 4. mysql
+	
+	pip install cython
+	pip install cymysql
+	
+> 5. gevent
+	http://xlambda.com/gevent-tutorial/
+	
+	
+	
