@@ -39,7 +39,7 @@ public class CuratorExample {
 
 		CuratorFramework zkclient = createWithOptions(zkhost, rp, 5000, 5000, namespace);
 
-		zkclient.getCuratorListenable().addListener(new NodeEventListener());
+		//zkclient.getCuratorListenable().addListener(new NodeEventListener());
 
 		return zkclient;
 
