@@ -2,6 +2,9 @@ package com.aug3.test.consul;
 
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
+
+import javax.ws.rs.client.ClientBuilder;
 
 import com.google.common.net.HostAndPort;
 import com.orbitz.consul.AgentClient;
@@ -21,22 +24,24 @@ public class ConsulTest {
 
 	public static void main(String[] args) throws Exception {
 
-		Consul consul = Consul.builder().withUrl("http://192.168.0.228:8500").build();
+		Consul consul = Consul.builder().build();
 
 		AgentClient agentClient = consul.agentClient();
 
 		String serviceName = "hqservice";
-		String serviceId = "1";
+		String serviceId = UUID.randomUUID().toString();
 
-		agentClient.register(18080, 3L, serviceName, serviceId, "hqservice");
+		// 1. register service
+		agentClient.register(18080, 20L, serviceName, serviceId);
 
-		agentClient.pass(serviceId);
+		agentClient.pass(serviceId); // check in with consul
 
+		// 2. find available services
 		HealthClient healthClient = consul.healthClient();
-		List<ServiceHealth> nodes = healthClient.getHealthyServiceInstances("hqservice")
+		List<ServiceHealth> nodes = healthClient.getHealthyServiceInstances(serviceName)
 				.getResponse();
 
-		// Subscribe to healthy services
+		// 3. Subscribe to healthy services
 		ServiceHealthCache svHealth = ServiceHealthCache.newCache(healthClient, serviceName);
 
 		svHealth.addListener(new ConsulCache.Listener<HostAndPort, ServiceHealth>() {
