@@ -23,7 +23,14 @@ python
 	pip install cymysql
 	
 > 5. gevent
+
 	http://xlambda.com/gevent-tutorial/
 	
+> 6. gui
+
+	autodriving (python, numpy, pandas, matplotlib, pyglet)	
 	
+> 7. machine learning
+
+	pytesser，OCR in Python using the Tesseract engine from Google
 	

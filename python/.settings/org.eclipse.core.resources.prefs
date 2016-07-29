@@ -1,6 +1,9 @@
 eclipse.preferences.version=1
+encoding//conf/cfg.py=utf-8
+encoding//crawler/community.py=utf-8
 encoding//dataops/ced.py=utf-8
 encoding//dataops/downloadstats.py=utf-8
+encoding//dataops/news.py=utf-8
 encoding//dataops/yhyc.py=utf-8
 encoding//memsql/testmemsql.py=utf-8
 encoding//tools/LRUCache.py=utf-8
