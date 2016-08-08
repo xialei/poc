@@ -49,6 +49,14 @@ def ershoufang():
         # http://su.lianjia.com<a name="selectDetail"  gahref="results_click_order_9" key="su1317263" target="_blank" href="/ershoufang/su1317263.html" title="满五唯一少税，实地看房，业主信赖，错过不再有">满五唯一少税，实地看房，业主信赖，错过不再有</a>
         
         break
-    
+
+def winshang():
+    url = 'http://biz.winshang.com/html/xm/487/20.htm'
+    response = urllib2.urlopen(url)
+    html = response.read()
+    soup = BeautifulSoup(html)
+    div_info = soup.find(name='div', attrs={'class':'xmt'})
+    print div_info.findAll(name='li', attrs={'title':'<%=CompanyName%>'})[0].get_text()
+        
 if __name__ == "__main__":
-    ershoufang()
+    winshang()
