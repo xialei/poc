@@ -1,6 +1,7 @@
 eclipse.preferences.version=1
 encoding//conf/cfg.py=utf-8
 encoding//crawler/community.py=utf-8
+encoding//crawler/gongshang.py=utf-8
 encoding//dataops/ced.py=utf-8
 encoding//dataops/downloadstats.py=utf-8
 encoding//dataops/news.py=utf-8

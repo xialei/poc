@@ -34,3 +34,11 @@ python
 
 	pytesser，OCR in Python using the Tesseract engine from Google
 	
+> 8. nlp
+
+	pip install --no-index --upgrade scipy-0.18.0-cp27-cp27m-win_amd64.whl
+
+	pip install --upgrade gensim
+	
+	conda install numpy
+	

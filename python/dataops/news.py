@@ -4,9 +4,12 @@ import re
 
 import jieba
 import word2vec
+import codecs
 
 from tools import mongoclient
-
+from gensim import corpora, models
+from gensim.models import LdaModel
+from gensim.corpora import Dictionary
 
 def generate_news_file(db):
 
@@ -80,8 +83,31 @@ def tokenizer():
 
 def wordvec():
     # 少于min_count次数的单词会被丢弃掉
-    word2vec.word2vec('D:\work\poc\python\dataops\segs.txt', 'vectors.bin', size=100, window=10, sample='1e-3', hs=1, negative=0, threads=12, iter_=5, min_count=10, binary=1, cbow=0, verbose=True)
-    # word2vec.doc2vec('D:\work\poc\python\dataops\segs.txt', 'D:\work\poc\python\dataops\vectors.bin', size=100, window=10, sample='1e-4', hs=1, negative=0, threads=12, iter_=20, min_count=1, binary=1, cbow=0, verbose=True)
+    word2vec.word2vec('D:\nlp\corpora\segs.txt', 'vectors.bin', size=100, window=10, sample='1e-3', hs=1, negative=0, threads=12, iter_=5, min_count=10, binary=1, cbow=0, verbose=True)
+    # word2vec.doc2vec('D:\nlp\corpora\segs.txt', 'D:\work\poc\python\dataops\vectors.bin', size=100, window=10, sample='1e-4', hs=1, negative=0, threads=12, iter_=20, min_count=1, binary=1, cbow=0, verbose=True)
+
+def lda():
+    # remove stop words
+    stopwords = codecs.open('../conf/stop_words_ch.txt', mode='r', encoding='utf8').readlines()
+    stopwords = [ w.strip() for w in stopwords ]
+    
+    fp = codecs.open('D:\\nlp\corpora\segs.txt', mode='r', encoding='utf8')
+    train = []
+    for line in fp:
+        line = line.split()
+        train.append([ w for w in line if w not in stopwords ])
+    
+    dictionary = corpora.Dictionary(train)
+    corpus = [ dictionary.doc2bow(text) for text in train ]
+    lda = LdaModel(corpus=corpus, id2word=dictionary, num_topics=100)
+    
+    lda.print_topics(30)
+    # print topic id=20
+    lda.print_topic(20)
+    
+    # save/load model
+    lda.save('D:\\nlp\corpora\news.model')
+    #     lda = LdaModel.load('D:\nlp\corpora\news.model')
 
 def test():
     s = "中国, 你好 ！   伟大 的  祖国. a 8"
@@ -95,5 +121,6 @@ if __name__ == "__main__":
     # generate_news_file(mongoclient.get_db())
     # cleanText()
     # tokenizer()
-    wordvec()
+    # wordvec()
+    lda()
     # test()
