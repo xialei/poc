@@ -34,6 +34,8 @@ python
 
 	pytesser，OCR in Python using the Tesseract engine from Google
 	
+	python-opencv : download opencv and cmake, make, makeinstall, cp cv.so to python directory
+	
 > 8. nlp
 
 	pip install --no-index --upgrade scipy-0.18.0-cp27-cp27m-win_amd64.whl
