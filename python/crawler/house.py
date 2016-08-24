@@ -2,6 +2,14 @@
 import urllib2
 import re
 from bs4 import BeautifulSoup
+from PIL import Image
+import cStringIO
+
+def fetchImg():
+    url =  'http://www.brandbigdata.com/upfile/Editor/image/20160810/6360643962139451892777033.jpg'
+    file = cStringIO.StringIO(urllib2.urlopen(url).read())
+    img = Image.open(file)
+    img.show()
 
 def ershoufang():
     # 网站
