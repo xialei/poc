@@ -8,12 +8,13 @@ import urllib2
 import StringIO
 import gzip
 import re
-
+from bs4 import BeautifulSoup
 import json
 
 def fetch_winner_list():
     
-    url = 'http://data.eastmoney.com/stock/tradedetail/2016-12-30.html'
+    dt = '2016-12-30'
+    url = 'http://data.eastmoney.com/stock/tradedetail/#dt#.html'.replace('#dt#', dt)
     
     html = getResponseHtml(url)
     
@@ -50,11 +51,23 @@ def fetch_winner_list():
         ltsz = tik['Ltsz']  # 流通市值
         list_reason = tik['Ctypedes']  # 上榜原因
         
+        fetch_detail(dt, secu)
         print secu, name, close, chg, dp, jm, mr, mc, ze, turn, jmrate, zerate, turn_rate, ltsz, list_reason
+        break
 
-def fetch_detail():
+def fetch_detail(dt, tik):
     
-    url = 'http://data.eastmoney.com/stock/lhb,2016-12-30,000538.html'
+    url = 'http://data.eastmoney.com/stock/lhb,#dt#,#tik#.html'.replace('#dt#', dt).replace('#tik#', tik)
+    
+    html = getResponseHtml(url)
+    
+    soup = BeautifulSoup(html)
+    
+    buy_tab = soup.find(name="table", attrs={'id':'tab-2'})
+    
+    sell_tab = soup.find(name="table", attrs={'id':'tab-4'})
+    
+    print buy_tab, sell_tab
 
 
 def getResponseHtml(url):
