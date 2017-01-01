@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
 from bs4 import BeautifulSoup
-import urllib2
-import StringIO
-import gzip
+import httptool
 import time
 import xlwt as excel
 import random
@@ -56,7 +54,7 @@ def crawlcompany(companyid, company, url):
     members = []
     punishs = []
     try:
-        html = getResponseHtml(url)
+        html = httptool.getResponseHtml(url)
         
         soup = BeautifulSoup(html)
         
@@ -167,7 +165,7 @@ def craw_investor_info(investorid, url):
     
     invests = []
     try:
-        html = getResponseHtml(baseurl + url)
+        html = httptool.getResponseHtml(baseurl + url)
         
         soup = BeautifulSoup(html)
         
@@ -280,27 +278,6 @@ def write_to_excel(baseinfo, investors, investinfo, changeitems, members, punish
                 
     fn = 'D:/company.xls'
     wb.save(fn)
-    
-def getResponseHtml(url):
-    try:
-        request = urllib2.Request(url)
-        request.add_header('Accept-Encoding', 'gzip')
-        response = urllib2.urlopen(request)
-        data = response.read()
-        response.close()
-        gzipped = response.headers.get('Content-Encoding')
-        if gzipped:
-            data = StringIO.StringIO(data)
-            gzipper = gzip.GzipFile(fileobj=data)
-            html = gzipper.read()
-            gzipper.close()
-        else:
-            html = data
-        # html = html.decode('GBK').encode('utf-8')
-        return html
-    except Exception, e:
-        print "No content for ", url, e
-    return None
 
 def test():
     for i in range(3):

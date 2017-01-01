@@ -4,9 +4,7 @@ Created on 2016年12月30日
 
 @author: roger.xia
 '''
-import urllib2
-import StringIO
-import gzip
+import httptool
 import re
 from bs4 import BeautifulSoup
 import json
@@ -16,7 +14,7 @@ def fetch_winner_list():
     dt = '2016-12-30'
     url = 'http://data.eastmoney.com/stock/tradedetail/#dt#.html'.replace('#dt#', dt)
     
-    html = getResponseHtml(url)
+    html = httptool.getResponseHtml(url)
     
     data_re = re.compile('var data_tab_1=(.*?);')
     
@@ -59,7 +57,7 @@ def fetch_detail(dt, tik):
     
     url = 'http://data.eastmoney.com/stock/lhb,#dt#,#tik#.html'.replace('#dt#', dt).replace('#tik#', tik)
     
-    html = getResponseHtml(url)
+    html = httptool.getResponseHtml(url)
     
     soup = BeautifulSoup(html)
     
@@ -68,28 +66,6 @@ def fetch_detail(dt, tik):
     sell_tab = soup.find(name="table", attrs={'id':'tab-4'})
     
     print buy_tab, sell_tab
-
-
-def getResponseHtml(url):
-    try:
-        request = urllib2.Request(url)
-        request.add_header('Accept-Encoding', 'gzip')
-        response = urllib2.urlopen(request)
-        data = response.read()
-        response.close()
-        gzipped = response.headers.get('Content-Encoding')
-        if gzipped:
-            data = StringIO.StringIO(data)
-            gzipper = gzip.GzipFile(fileobj=data)
-            html = gzipper.read()
-            gzipper.close()
-        else:
-            html = data
-        # html = html.decode('GBK').encode('utf-8')
-        return html
-    except Exception, e:
-        print "No content for ", url, e
-    return None
 
 if __name__ == '__main__':
     fetch_winner_list()

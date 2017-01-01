@@ -1,9 +1,7 @@
 # -*- coding: utf-8 -*-
 from bs4 import BeautifulSoup
 from conf import cfg
-import urllib2
-import StringIO
-import gzip
+import httptool
 import time
 import xlwt as excel
 import random
@@ -16,7 +14,7 @@ import random
 def crawlerjob(url):
     
     try:
-        html = getResponseHtml(url)
+        html = httptool.getResponseHtml(url)
         
         soup = BeautifulSoup(html)
         list_dist = soup.find(name="li", attrs={'id':'hlist_21'})
@@ -33,7 +31,7 @@ def crawlerjob(url):
 def crawler_shangquan(district, baseurl, href):
     
     try:
-        html = getResponseHtml(url.replace('/housing/', href))
+        html = httptool.getResponseHtml(url.replace('/housing/', href))
         
         soup = BeautifulSoup(html)
         list_shangquan = soup.find(name="li", attrs={'class':'shangquan'})
@@ -53,7 +51,7 @@ def crawler_shangquan(district, baseurl, href):
 def crawler_pages(district, url):
     # print district, url
     try:
-        html = getResponseHtml(url)
+        html = httptool.getResponseHtml(url)
         
         soup = BeautifulSoup(html)
         
@@ -80,7 +78,7 @@ def crawler_pages(district, url):
 
 def crawl_page(district, url):
     try:
-        html = getResponseHtml(url)
+        html = httptool.getResponseHtml(url)
         
         soup = BeautifulSoup(html)
         
@@ -108,27 +106,6 @@ def write_to_excel(sheet, datalist):
             except:
                 print i, j
     wb.save(fn)
-    
-def getResponseHtml(url):
-    try:
-        request = urllib2.Request(url)
-        request.add_header('Accept-Encoding', 'gzip')
-        response = urllib2.urlopen(request)
-        data = response.read()
-        response.close()
-        gzipped = response.headers.get('Content-Encoding')
-        if gzipped:
-            data = StringIO.StringIO(data)
-            gzipper = gzip.GzipFile(fileobj=data)
-            html = gzipper.read()
-            gzipper.close()
-        else:
-            html = data
-        html = html.decode('GBK').encode('utf-8')
-        return html
-    except Exception, e:
-        print "No content for ", url, e
-    return None
 
 def test():
     for i in range(3):
