@@ -100,7 +100,7 @@ def fetch_winner_list2(dt='2016-12-30'):
         ltsz = sf[17]  # 流通市值
         list_reason = sf[8]  # 上榜原因
         
-        lhb.append([dt, secu, name, close, chg, dp, jm, mr, mc, ze, turn, jmrate, zerate, turn_rate, ltsz, list_reason])
+        lhb.append([dt, secu, name.encode('GBK'), close, chg, dp.encode('GBK'), jm, mr, mc, ze, turn, jmrate, zerate, turn_rate, ltsz, list_reason.encode('GBK')])
         
         counter = counter + 1
         buy, sell = fetch_detail(dt, secu, counter)
@@ -148,7 +148,7 @@ def parse_table(table, dt, tik, flag):
     for r in buy_tr:
         tds = r.findAll("td")
         rank = tds[0].getText()
-        security = tds[1].findAll(name="div", attrs={'class':'sc-name'})[0].getText().replace('\n', '')
+        security = tds[1].findAll(name="div", attrs={'class':'sc-name'})[0].getText().replace('\n', '').encode('GBK')
         buy = tds[2].getText()
         buy_ratio = tds[3].getText()
         sell = tds[4].getText()
