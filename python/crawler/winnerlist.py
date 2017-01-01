@@ -84,7 +84,7 @@ def fetch_winner_list2(dt='2016-12-30'):
     counter = 0
     for secuinfo in seculist:
         sf = secuinfo.split('|')
-        secu = sf[0]
+        secu = str(sf[0])
         name = sf[1]
         close = sf[2]
         chg = sf[3] # 涨跌幅
@@ -139,6 +139,10 @@ def fetch_detail(dt, tik, counter):
 def parse_table(table, dt, tik, flag):
     
     ranklist = []
+    
+    if table is None:
+        return ranklist
+    
     buy_tbody = table.findAll(name="tbody")
     
     if buy_tbody is None:
@@ -146,15 +150,18 @@ def parse_table(table, dt, tik, flag):
     
     buy_tr = buy_tbody[0].findAll(name="tr", attrs={'class':''})
     for r in buy_tr:
-        tds = r.findAll("td")
-        rank = tds[0].getText()
-        security = tds[1].findAll(name="div", attrs={'class':'sc-name'})[0].getText().replace('\n', '').encode('GBK')
-        buy = tds[2].getText()
-        buy_ratio = tds[3].getText()
-        sell = tds[4].getText()
-        sell_ratio = tds[5].getText()
-        net = tds[6].getText()
-        ranklist.append([dt, tik, flag, rank, security, buy, buy_ratio, sell, sell_ratio, net])
+        try:
+            tds = r.findAll("td")
+            rank = tds[0].getText()
+            security = tds[1].findAll(name="div", attrs={'class':'sc-name'})[0].getText().replace('\n', '').encode('GBK')
+            buy = tds[2].getText()
+            buy_ratio = tds[3].getText()
+            sell = tds[4].getText()
+            sell_ratio = tds[5].getText()
+            net = tds[6].getText()
+            ranklist.append([dt, tik, flag, rank, security, buy, buy_ratio, sell, sell_ratio, net])
+        except:
+            print 'exception'
     return ranklist
 
 def dump_result_to_csv(fname, headers, datalist):
