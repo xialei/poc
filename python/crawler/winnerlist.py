@@ -87,7 +87,7 @@ def fetch_winner_list2(dt='2016-12-30'):
         secu = str(sf[0])
         name = sf[1]
         close = sf[2]
-        chg = sf[3] # 涨跌幅
+        chg = sf[3]  # 涨跌幅
         dp = sf[-1]  # 解读
         jm = sf[5]  # 龙虎榜净买额 需要1000
         mr = sf[11]  # 龙虎榜买入额
@@ -116,7 +116,7 @@ def fetch_detail(dt, tik, counter):
     
     html = httptool.getResponseHtml(url)
     
-    sleeptime = random.randint(1,3)
+    sleeptime = random.randint(1, 3)
     time.sleep(sleeptime)
     print dt, tik, sleeptime, counter
     
@@ -172,19 +172,31 @@ def dump_result_to_csv(fname, headers, datalist):
         w.writerow(row)
     f.close()
 
+def dump_result(counter, result_lhb, result_related_securities):
+    dump_result_to_csv('./lhb_number.csv'.replace('number', counter), ['dt', 'secu', 'name', 'close', 'chg', 'dp', 'jm', 'mr', 'mc', 'ze', 'turn', 'jmrate', 'zerate', 'turn_rate', 'ltsz', 'list_reason'], result_lhb)
+    dump_result_to_csv('./lhb_related_secus_number.csv'.replace('number', counter), ['dt', 'tik', 'flag', 'rank', 'security', 'buy', 'buy_ratio', 'sell', 'sell_ratio, net'], result_related_securities)
+    
 def crawl_winner_list():
     
-    end = datetime.datetime.strptime('2016-12-30', "%Y-%m-%d").date()
-    days = 2
+    dt = '2016-11-14'
+    end = datetime.datetime.strptime(dt, "%Y-%m-%d").date()
+    days = 90
     result_lhb = []
     result_related_securities = []
+    counter = 10
     for i in range(days):
         dt = end + datetime.timedelta(days=-i)
         lhb, related_securities = fetch_winner_list2(str(dt))
         result_lhb.extend(lhb)
         result_related_securities.extend(related_securities)
-    dump_result_to_csv('./lhb.csv', ['dt', 'secu', 'name', 'close', 'chg', 'dp', 'jm', 'mr', 'mc', 'ze', 'turn', 'jmrate', 'zerate', 'turn_rate', 'ltsz', 'list_reason'], result_lhb)
-    dump_result_to_csv('./lhb_related_secus.csv', ['dt', 'tik', 'flag', 'rank', 'security', 'buy', 'buy_ratio', 'sell', 'sell_ratio, net'], result_related_securities)
+        if (i + 1) % 7 == 0:
+            print 'dump to csv', str(counter)
+            dump_result(str(counter), result_lhb, result_related_securities)
+            counter = counter + 1
+            result_lhb = []
+            result_related_securities = []
+    if len(result_lhb) > 0:
+        dump_result(str(counter), result_lhb, result_related_securities)
     
 if __name__ == '__main__':
     crawl_winner_list()
