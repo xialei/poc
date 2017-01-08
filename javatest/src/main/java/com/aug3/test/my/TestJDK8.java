@@ -1,5 +1,11 @@
 package com.aug3.test.my;
 
+import static java.util.Comparator.comparing;
+import static java.util.stream.Collectors.groupingBy;
+import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.mapping;
+import static java.util.stream.Collectors.joining;
+
 import java.time.Clock;
 import java.time.DateTimeException;
 import java.time.Instant;
@@ -18,7 +24,6 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.IntStream;
@@ -51,11 +56,15 @@ public class TestJDK8 {
 		System.out.println("=== filter ===");
 
 		List<String> names = Arrays.asList("Alan", "Ada", "Jim", "Roger", "Who else");
-		List<String> filterNames = Arrays.asList(names.stream().filter(name -> name.startsWith("A"))
-				.toArray(String[]::new));
+		List<String> filterNames = Arrays
+				.asList(names.stream().filter(name -> name.startsWith("A")).toArray(String[]::new));
 
 		filterNames.forEach(elem -> System.out.println(elem));
 
+	}
+
+	public static void printSorted(List<Person> people, Comparator<Person> comparator) {
+		people.stream().sorted(comparator).forEach(System.out::println);
 	}
 
 	private static void testComparator() {
@@ -87,6 +96,18 @@ public class TestJDK8 {
 		for (Person p : personList) {
 			p.printName();
 		}
+
+		System.out.println("=== comparing SurName ===");
+		printSorted(personList, comparing(Person::getSurName));
+
+		System.out.println("=== comparing age ===");
+		printSorted(personList, comparing(Person::getAge).thenComparing(Person::getGivenName).reversed());
+
+		System.out.println("=== group by age ===");
+		System.out.println(personList.stream().collect(groupingBy(Person::getAge)));
+
+		System.out.println(
+				personList.stream().collect(groupingBy(Person::getAge, mapping(Person::getGivenName, toList()))));
 	}
 
 	/**
@@ -114,23 +135,18 @@ public class TestJDK8 {
 		}
 
 		// 使用IntStream调用parallel()方法来执行Integer数据类型的并行流处理操作
-		IntStream
-				.range(0, num)
-				.parallel()
-				.forEach(
-						i -> {
-							for (Credit crd : portfolio) {
-								int remDays = Math.min(crd.getRemainingTerm(), horizon);
+		IntStream.range(0, num).parallel().forEach(i -> {
+			for (Credit crd : portfolio) {
+				int remDays = Math.min(crd.getRemainingTerm(), horizon);
 
-								if (rndGen.nextDouble() >= 1 - crd.getDefaultProbability(remDays))
-									losses[i] += (1 + crd.getAnnualRate() * Math.min(horizon, crd.getRemainingTerm())
-											/ 365)
-											* crd.getRemainingAmount();
-								else
-									losses[i] -= crd.getAnnualRate() * Math.min(horizon, crd.getRemainingTerm()) / 365
-											* crd.getRemainingAmount();
-							}
-						});
+				if (rndGen.nextDouble() >= 1 - crd.getDefaultProbability(remDays))
+					losses[i] += (1 + crd.getAnnualRate() * Math.min(horizon, crd.getRemainingTerm()) / 365)
+							* crd.getRemainingAmount();
+				else
+					losses[i] -= crd.getAnnualRate() * Math.min(horizon, crd.getRemainingTerm()) / 365
+							* crd.getRemainingAmount();
+			}
+		});
 	}
 
 	public static void testTime() {
@@ -203,7 +219,8 @@ public class TestJDK8 {
 		LocalDateTime localtDateAndTime = LocalDateTime.now();
 		// ZonedDateTime dateAndTimeInNewYork =
 		// ZonedDateTime.of(localtDateAndTime, ZoneId.of("IET"));
-		// System.out.println("Current date and time in a particular timezone : "
+		// System.out.println("Current date and time in a particular timezone :
+		// "
 		// + dateAndTimeInNewYork);
 
 		//
@@ -300,17 +317,109 @@ public class TestJDK8 {
 
 	}
 
+	private static void testStringJoins() {
+		List<String> names = Arrays.asList("Roger", "Tom", "Terry", "Jack");
+
+		// print the names in uppercase with comma separated
+		System.out.println(names.stream().map(String::toUpperCase).collect(joining(", ")));
+	}
+
 	public static void main(String[] args) {
 
 		// testRunnable();
 		//
 		// testListFilter();
 		//
-		// testComparator();
+		testComparator();
 		//
 		// changeCode();
 
-		testTime();
+		// testTime();
+		testStringJoins();
+
+		System.out.println(Util.numberOfCores());
+
+		SeaPlane seaPlane = new SeaPlane();
+		seaPlane.takeOff();
+		seaPlane.turn();
+		seaPlane.cruise();
+		seaPlane.land();
+		// FastFly : take off
+		// Fly : turn
+		// SeaPlane : cruise
+		// Fly : cruise
+		// Vehicle : land
+
+	}
+
+}
+
+interface Util {
+	// static interface method
+	public static int numberOfCores() {
+		return Runtime.getRuntime().availableProcessors();
+	}
+
+}
+
+interface Fly {
+	// default method
+	// four rules of default method
+	// 1. you get what is in the base interface
+	// 2. you may override a default method
+	// 3. if a method is there in the class hiearchy then it takes precedence
+	// 4. if there is no method on any of the classes in the hierachy, but two
+	// of your interfaces
+	// that you implements has the default method, to solve this use rule 3.
+	default void takeOff() {
+		System.out.println("Fly : take off");
+		getState();
+	}
+
+	default void turn() {
+		System.out.println("Fly : turn");
+	}
+
+	default void cruise() {
+		System.out.println("Fly : cruise");
+	}
+
+	default void land() {
+		System.out.println("Fly : land");
+	}
+
+	void getState();
+}
+
+interface FastFly extends Fly {
+	default void takeOff() {
+		System.out.println("FastFly : take off");
+	}
+}
+
+interface Sail {
+	default void cruise() {
+		System.out.println("Sail : cruise");
+	}
+}
+
+class Vehicle {
+	public void land() {
+		System.out.println("Vehicle : land");
+	}
+}
+
+class SeaPlane extends Vehicle implements FastFly, Sail {
+
+	@Override
+	public void getState() {
+		// TODO Auto-generated method stub
+
+	}
+
+	public void cruise() {
+		System.out.println("SeaPlane : cruise");
+		FastFly.super.cruise();
 	}
 
 }

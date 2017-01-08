@@ -40,7 +40,22 @@ public class Person {
 		p2.setAddress("Shanghai China");
 		list.add(p2);
 
+		Person p3 = new Person();
+		p3.setGivenName("Yi");
+		p3.setSurName("Yun");
+		p3.setAge(36);
+		p3.seteMail("yiyun@gmail.com");
+		p3.setPhone("13698888889");
+		p3.setAddress("Jiangsu China");
+		list.add(p3);
+
 		return list;
+	}
+
+	@Override
+	public String toString() {
+		return "Person [givenName=" + givenName + ", surName=" + surName + ", age=" + age + ", eMail=" + eMail
+				+ ", phone=" + phone + ", address=" + address + "]";
 	}
 
 	public void printName() {
