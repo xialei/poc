@@ -2,9 +2,9 @@ package com.aug3.test.my;
 
 import static java.util.Comparator.comparing;
 import static java.util.stream.Collectors.groupingBy;
-import static java.util.stream.Collectors.toList;
-import static java.util.stream.Collectors.mapping;
 import static java.util.stream.Collectors.joining;
+import static java.util.stream.Collectors.mapping;
+import static java.util.stream.Collectors.toList;
 
 import java.time.Clock;
 import java.time.DateTimeException;
@@ -24,8 +24,11 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
+import java.util.function.Predicate;
 import java.util.stream.IntStream;
 
 import org.apache.commons.lang.StringUtils;
@@ -324,6 +327,36 @@ public class TestJDK8 {
 		System.out.println(names.stream().map(String::toUpperCase).collect(joining(", ")));
 	}
 
+	private static void testPredicate(int number, Predicate<Integer> predicate, String msg) {
+		System.out.println(number + " " + msg + ":" + predicate.test(number));
+
+	}
+
+	private static double compute(int number) {
+		return Math.sqrt(number);
+	}
+
+	private static int doubleIt(int number) {
+		System.out.println(number + " : " + Thread.currentThread());
+		try {
+			Thread.sleep(500);
+		} catch (Exception ex) {
+
+		}
+		return number * 2;
+	}
+
+	private static void testParallelStream() {
+		List<Integer> numbers = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16);
+
+		long t1 = System.currentTimeMillis();
+		System.out.println(numbers.stream().map(TestJDK8::doubleIt).reduce(0, Integer::sum));
+		long t2 = System.currentTimeMillis();
+		System.out.println(numbers.parallelStream().map(TestJDK8::doubleIt).reduce(0, Integer::sum));
+		long t3 = System.currentTimeMillis();
+		System.out.println(t2 - t1 + " " + (t3 - t2));
+	}
+
 	public static void main(String[] args) {
 
 		// testRunnable();
@@ -349,6 +382,17 @@ public class TestJDK8 {
 		// SeaPlane : cruise
 		// Fly : cruise
 		// Vehicle : land
+
+		Predicate<Integer> isEven = e -> e % 2 == 0;
+		Predicate<Integer> isGreatThan4 = e -> e > 4;
+		testPredicate(5, isEven, "is even?");
+		testPredicate(5, isEven.and(isGreatThan4), "is even and great than 4?");
+
+		Map<Integer, Double> sqrt = new HashMap<>();
+		sqrt.computeIfAbsent(4, TestJDK8::compute);
+		System.out.println(sqrt.get(4));
+
+		testParallelStream();
 
 	}
 
